@@ -1,0 +1,13 @@
+{
+  "name": "cursobackend",
+  "version": "1.0.0",
+  "description": "cursobackend",
+  "main": "CursoBackEnd.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start":"node CursoBackEnd.js" 
+    
+  },
+  "author": "enrique",
+  "license": "ISC"
+}
