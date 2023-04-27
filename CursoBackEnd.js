@@ -1,131 +1,74 @@
-
-
-/*
 class ProductManager {
-    constructor () {
+  constructor() {
     this.products = [];
+  }
 
-*/
-
-
-   /* this.title = "";
-    this.description ="";
-    this.price= 0;
-    this.thumbnail ="img";
-    this.code = "id";
-    this.stock = 0;
-*/
-  /*  }
-    getProducts () {
-console.log (this.products);
-return this.products;
-}
-#generarId (){
-
-    let idGenerado = 0;
-    return idGenerado;
-    
-}
-
-
-
-*/
-    /* 
-
-    addProduct = (product) => {
-        const toArray = Object.values(product);
-        const containNull = toArray.includes(null);
-        const existsInArray = this.products.some(
-            (p) => (p.code = product.code)
-        );
-
-        const productFinal = {
-            id: this.getId(),
-            ...product,
-        };
-
-        (!existsInArray && !containNull && this.products.push(productFinal)) ||
-            console.log("Error product");
-    };
-}
-*/
-
-
-
-class TicketManager {
-    constructor(){
-this.eventos = [];
-}
-
-/* CREAMOS EL CONSTRUCTOR
-
-class ProductManager {
-    constructor () {
-    this.products = [];
-
-*/
-
-getEventos(){
-    console.log(this.eventos)
-    return this.eventos;
-}
-/* GET PRODUCTS
-
-getProducts(){
-    console.log(this.products)
+  getProducts() {
+    console.log(this.products);
     return this.products;
-}
-*/
-buscarEvento(id){
-    const encontrado = this.eventos.find ((eve)=> eve.id == id);
-
-if (encontrado) {
-    return encontrado;
-
-} else {
-    return undefined;
-}
-
-}
-/* BUSCAMOS EL PRODUCTO POR ID
-
-getProductById(id)
-const foundProductById = this.product.find ((product)=> product.id == id);
-if (foundProductById) {
-    retun findProductById
-} else{
-    console.log (`Not Found`);
-    return undefined;
-}
-*/
-
-agregarEvento (
-    nombre,
-    lugar,
-    precio,
-    capacidad,
-    fecha
-    )
-    {
-        capacidad  = capacidad ?? 50;
-        fecha = fecha || Date.now();
-        const eventoNuevo = [nombre, lugar, precio, capacidad, fecha];
-        this.eventos = [...this.eventos, eventoNuevo];
-        return true;
-
+  }
+  getProductById(id) {
+    const productFound = this.products.find((pro) => pro.id == id);
+    if (productFound) {
+      return productFound;
+    } else {
+      console.log("Not found");
+      return undefined;
     }
-    /* AQUI AÑADIMOS EL PRODUCTO 
-    addProduct (
-        tittle,
-        description,
-        thumbnail,
-        code,
-        stock){
+  }
+  #getProductByCode(code) {
+    const isInsArray = this.products.find((pro) => pro.code == code);
+    if (isInsArray) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
-
-
-        }
-    )
-    
-*/
+  #generateId() {
+    let maxId = 0;
+    for (let index = 0; index < this.products.length; index++) {
+      const pro = this.products[index];
+      if (pro.id > maxId) {
+        maxId = pro.id;
+      }
+      return ++maxId;
+    }
+  }
+  addProduct(title, description, price, thumbnail, code, stock) {
+    if (
+      title == undefined ||
+      title == null ||
+      title == "" ||
+      description == undefined ||
+      description == null ||
+      description == "" ||
+      price == undefined ||
+      price == null ||
+      price == "" ||
+      thumbnail == undefined ||
+      (thumbnail == null) | (thumbnail == "") ||
+      code == undefined ||
+      (code == null) | (code == "") ||
+      this.#getProductByCode(code) ||
+      stock == undefined ||
+      stock == null ||
+      stock == ""
+    ) {
+      console.log("Error");
+    } else {
+      let newProduct = { ...this.addProduct, id: this.#generateId() };
+      this.products = [...this.products, newProduct];
+    }
+  }
 }
+const testProduct = new ProductManager();
+
+testProduct.addProduct(
+  "producto prueba",
+  "Este es un producto prueba",
+  200,
+  "Sin imagen",
+  "abc123",
+  25,
+);
