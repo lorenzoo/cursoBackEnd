@@ -6,9 +6,8 @@
   "scripts": {
     "node CursoBackEnd.js": "start"
   },
+  "editor.formatOnSave": true,
   "author": "enrique",
-  "license": "ISC",
-  "devDependencies": {
-    "prettier": "2.8.8"
-  }
+  "license": "ISC"
+  
 }
