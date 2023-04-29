@@ -25,7 +25,7 @@ class ProductManager {
       return false;
     }
   }
-  
+
   /*  #generateId() {
       let Id = 0;
       for (let i = 0; i < this.products.length; i++) {
@@ -38,7 +38,7 @@ class ProductManager {
       }
     }
   */
-  
+
   #generateId() {
 
     let newId = 1;
@@ -53,9 +53,9 @@ class ProductManager {
     thumbnail,
     code,
     stock
-    ) {
+  ) {
     //const id = this.#generateId();
-    
+
     if (
       (title == undefined ||
         title == null ||
@@ -93,7 +93,7 @@ class ProductManager {
         code,
         stock,
         id: this.#generateId(),
-        
+
       };
       // hasta aqui todo bien
       this.products = [...this.products, newProduct];
