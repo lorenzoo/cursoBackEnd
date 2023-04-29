@@ -41,9 +41,9 @@ class ProductManager {
 
   #generateId() {
 
-    let newId = 1;
-    newId = this.products.length;
-    return ++newId;
+    //let newId = this.products.length;
+    //newId = this.products.length;
+    return this.products.length+1;
   }
 
   addProduct(
@@ -82,7 +82,7 @@ class ProductManager {
         stock == null ||
         stock == "")
     ) {
-      console.log("Error, all fields are required");
+      console.log("Error, all fields are required, make sure this product is not adde in the system already");
     } else {
       //const id = this.#generateId()
       const newProduct = {
@@ -125,5 +125,6 @@ testProduct.addProduct(
   "abc123_2",
   25_2
 );
+
 
 console.log(testProduct.products);
