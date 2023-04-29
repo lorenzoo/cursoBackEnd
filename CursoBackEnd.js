@@ -82,7 +82,7 @@ class ProductManager {
         stock == null ||
         stock == "")
     ) {
-      console.log("Error");
+      console.log("Error, all fields are required");
     } else {
       //const id = this.#generateId()
       const newProduct = {
