@@ -165,4 +165,8 @@ testProduct.getProducts();
 
 console.log(testProduct.products); 
 testProduct.updateProduct(1, 'title', 'metal');
+<<<<<<< HEAD
 testProduct.updateProduct(1, 'description', 'oro');
+=======
+testProduct.updateProduct(1, 'description', 'oro');
+>>>>>>> 3f24aeaac7c34cb2a6531a47dfbf144d6bec5d59
