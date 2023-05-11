@@ -4,10 +4,17 @@
   "description": "cursobackend",
   "main": "CursoBackEnd.js",
   "scripts": {
-    "node CursoBackEnd.js": "start"
+    
+    
+    "start":  "nodemon server.js"
   },
   "editor.formatOnSave": true,
   "author": "enrique",
-  "license": "ISC"
-  
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "moment": "^2.29.4",
+    "prettier": "^3.0.0-alpha.6"
+  },
+  "keywords": []
 }

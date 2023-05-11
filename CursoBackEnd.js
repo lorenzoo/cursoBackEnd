@@ -6,16 +6,17 @@ class ProductManager {
   constructor(path) {
     this.products = [];
     this.#path = path;
-    if (!fs.existsSync(this.#path))
-    return fs.writeFileSync(this.#path, "[]")
-}
+    if (!fs.existsSync(this.#path)){
+      return fs.writeFileSync(this.#path, "[]")
+    }
+  }
 
- 
+
   getProducts() {
     this.products = JSON.parse(fs.readFileSync(this.#path, "utf-8"))
     console.log(this.products);
     return this.products;
-}
+  }
 
 
 
@@ -60,34 +61,34 @@ class ProductManager {
     this.products = JSON.parse(fs.readFileSync(this.#path, "utf-8"))
 
     if (
-      (title == undefined ||
-        title == null ||
-        title == "") ||
+      title == undefined ||
+      title == null ||
+      title == "" ||
 
-      (description == undefined ||
-        description == null ||
-        description == "") ||
+      description == undefined ||
+      description == null ||
+      description == "" ||
 
-      (price == undefined ||
-        price == null ||
-        price == "") ||
+      price == undefined ||
+      price == null ||
+      price == "" ||
 
-      (thumbnail == undefined ||
-        thumbnail == null ||
-        thumbnail == "") ||
+      thumbnail == undefined ||
+      thumbnail == null ||
+      thumbnail == "" ||
 
-      (code == undefined ||
-        code == null ||
-        code == "" ||
-        this.#getProductByCode(code)) ||
+      code == undefined ||
+      code == null ||
+      code == "" ||
+      this.#getProductByCode(code) ||
 
-      (stock == undefined ||
-        stock == null ||
-        stock == "")
+      stock == undefined ||
+      stock == null ||
+      stock == ""
     ) {
       console.log("Error, all fields are required, make sure this product is not adde in the system already");
     } else {
-      
+
       const newProduct = {
         title,
         description,
@@ -96,7 +97,7 @@ class ProductManager {
         code,
         stock,
         id: this.#generateId(),
-        
+
 
       };
 
@@ -116,7 +117,7 @@ class ProductManager {
       this.products.splice(this.products.indexOf(this.products.find(pro => pro.id === id)), 1)
       fs.writeFileSync(this.#path, JSON.stringify(this.products))
       return console.log("Deleted product successfully")
-      
+
     } else {
       return console.log("Product not found")
     }
@@ -163,6 +164,15 @@ testProduct.addProduct(
 
 testProduct.getProducts();
 
-console.log(testProduct.products); 
+console.log(testProduct.products);
 testProduct.updateProduct(1, 'title', 'metal');
 testProduct.updateProduct(1, 'description', 'oro');
+
+//chat error
+/*try {
+  var myObj = JSON.parse(myJSON);
+}
+catch (e) {
+  console.log("Error al analizar JSON: " + e);
+}
+*/
