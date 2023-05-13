@@ -1,8 +1,9 @@
 //const express = require ("express");
 //import express from "express";
 //const fs = require("fs/promises")
-
 import {ProductManager} from "./CursoBackEnd.js";
+
+
 import * as express from "express";
 
 //const fs = require ("fs");

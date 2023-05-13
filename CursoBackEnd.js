@@ -1,8 +1,7 @@
 import fs from "fs/promises";
-//const fs = require("fs/promises")
+//const fs = require("fs/promises");
 //const fs = require ("fs");
-
-
+//import { promises as fs } from "fs";
 
 class ProductManager {
   #path;
@@ -45,18 +44,14 @@ class ProductManager {
     return this.#products.length + 1;
   }
 
-  addProduct(title, description, price, thumbnail, code, stock) {
-    if (
-      !title ||
-      !description ||
-      !price ||
-      !thumbnail ||
-      !code ||
-      !stock ||
-      this.#getProductByCode(code)
-    ) {
-      throw new Error("Error: All fields are required, or the product already exists in the system.");
+  async addProduct(title, description, price, thumbnail, code, stock) {
+    if (!title || !description || !price || !thumbnail || !code || !stock) {
+      throw new Error("Error: All fields are required.");
     }
+    if (this.#getProductByCode(code)) {
+      throw new Error("Error: Product with the same code already exists.");
+    }
+
 
     const newProduct = {
       title,
@@ -69,24 +64,28 @@ class ProductManager {
     };
 
     this.#products.push(newProduct);
-    fs.writeFile(this.#path, JSON.stringify(this.#products));
-    console.log("Product added successfully.");
-    return true;
+    try {
+      await fs.writeFile(this.#path, JSON.stringify(this.#products));
+      console.log("Product added successfully.");
+      return true;
+    } catch (error) {
+      console.error("Error writing file:", error);
+      return false;
+    }
   }
-
-  deleteProduct(id) {
+  async deleteProduct(id) {
     const productIndex = this.#products.findIndex((product) => product.id === id);
     if (productIndex === -1) {
       console.log("Product not found.");
       return false;
     }
     this.#products.splice(productIndex, 1);
-    fs.writeFile(this.#path, JSON.stringify(this.#products));
+    await fs.writeFile(this.#path, JSON.stringify(this.#products));
     console.log("Product deleted successfully.");
     return true;
   }
 
-  updateProduct(id, key, value) {
+  async updateProduct(id, key, value) {
     if (key === "id") {
       console.log("It is not possible to modify the id field, try another field.");
       return false;
@@ -99,48 +98,22 @@ class ProductManager {
     }
 
     product[key] = value;
-    fs.writeFile(this.#path, JSON.stringify(this.#products));
+    await fs.writeFile(this.#path, JSON.stringify(this.#products));
     console.log("Product updated successfully.");
     return true;
   }
+
 }
 
+const productManager = new ProductManager("./products.json");
 
+productManager.addProduct("producto prueba", "Este es un producto prueba", 200, "Sin imagen", "abc123", 25);
+productManager.addProduct("producto prueba_2", "Este es un producto prueba_2", 200222, "Sin imagen_2", "abc123_2", 252);
 
+productManager.getProducts();
 
+console.log(productManager.products);
+productManager.updateProduct(1, 'title', 'metal');
+productManager.updateProduct(1, 'description', 'oro');
 
-
-
-
-const testProduct = new ProductManager("./product.json");
-
-testProduct.addProduct(
-
-  "producto prueba",
-  "Este es un producto prueba",
-  200,
-  "Sin imagen",
-  "abc123",
-  25
-);
-
-testProduct.addProduct(
-
-  "producto prueba_2",
-  "Este es un producto prueba_2",
-  200222,
-  "Sin imagen_2",
-  "abc123_2",
-  25_2
-);
-
-testProduct.getProducts();
-
-console.log(testProduct.products);
-testProduct.updateProduct(1, 'title', 'metal');
-testProduct.updateProduct(1, 'description', 'oro');
-
-
-
-export {ProductManager}
-
+export { ProductManager };
