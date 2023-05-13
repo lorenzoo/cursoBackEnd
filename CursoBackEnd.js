@@ -137,3 +137,6 @@ testProduct.updateProduct(1, 'title', 'metal');
 testProduct.updateProduct(1, 'description', 'oro');
 
 
+
+module.exports = ProductManager
+
