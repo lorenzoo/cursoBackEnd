@@ -136,4 +136,8 @@ console.log(testProduct.products);
 testProduct.updateProduct(1, 'title', 'metal');
 testProduct.updateProduct(1, 'description', 'oro');
 
+<<<<<<< HEAD
 module.exports = ProductManager
+=======
+module.exports = ProductManager
+>>>>>>> ee843a9e59caf9d120cfda4027a04015bb02864d
