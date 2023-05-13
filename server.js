@@ -1,12 +1,13 @@
 //const express = require ("express");
-//mport express from "express";
+//import express from "express";
+//const fs = require("fs/promises")
 
-//import {ProductManager} from "./CursoBackEnd.js";
-/*import * as express from "express";
-*/
-const fs = require ("fs");
-const express = require ("express");
-const ProductManager = require("./CursoBackEnd.js");
+import {ProductManager} from "./CursoBackEnd.js";
+import * as express from "express";
+
+//const fs = require ("fs");
+//const express = require ("express");
+//const ProductManager = require("./CursoBackEnd.js");
 
 const app = express();
 const port = 8080;

@@ -1,5 +1,9 @@
 import fs from "fs/promises";
+//const fs = require("fs/promises")
 //const fs = require ("fs");
+
+
+
 class ProductManager {
   #path;
   #products;
@@ -138,5 +142,5 @@ testProduct.updateProduct(1, 'description', 'oro');
 
 
 
-module.exports = ProductManager
+export {ProductManager}
 
