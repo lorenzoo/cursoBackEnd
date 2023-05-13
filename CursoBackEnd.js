@@ -137,4 +137,4 @@ console.log(testProduct.products);
 testProduct.updateProduct(1, 'title', 'metal');
 testProduct.updateProduct(1, 'description', 'oro');
 
-module.export = ProductManager
+module.exports = ProductManager
