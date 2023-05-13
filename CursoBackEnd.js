@@ -1,143 +1,112 @@
-const fs = require("fs");
 
+import fs from "fs/promises";
 
 class ProductManager {
-  #path
+  #path;
+  #products;
   constructor(path) {
-    this.products = [];
     this.#path = path;
-    if (!fs.existsSync(this.#path)){
-      return fs.writeFileSync(this.#path, "[]")
+    this.#products = [];
+    this.#initialize();
+  }
+
+  async #initialize() {
+    try {
+      const fileContent = await fs.readFile(this.#path, "utf-8");
+      this.#products = JSON.parse(fileContent);
+    } catch (error) {
+      await fs.writeFile(this.#path, "[]");
     }
   }
 
-
   getProducts() {
-    this.products = JSON.parse(fs.readFileSync(this.#path, "utf-8"))
-    console.log(this.products);
-    return this.products;
+    console.log(this.#products);
+    return this.#products;
   }
 
-
-
   getProductById(id) {
-
-    this.products = JSON.parse(fs.readFileSync(this.#path, "utf-8"))
-    const productFound = this.products.find(pro => pro.id == id);
+    const productFound = this.#products.find((product) => product.id === id);
     if (productFound) {
       return productFound;
     } else {
-      console.log("Not found");
+      console.log("Product not found");
       return undefined;
     }
   }
+
   #getProductByCode(code) {
-
-    this.products = JSON.parse(fs.readFileSync(this.#path, "utf-8"))
-    const isInsArray = this.products.find(pro => pro.code === code);
-    if (isInsArray) {
-      return isInsArray;
-    } else {
-      return false;
-    }
+    return this.#products.find((product) => product.code === code);
   }
-
 
   #generateId() {
-
-
-    return this.products.length + 1;
+    return this.#products.length + 1;
   }
 
-  addProduct(
-    title,
-    description,
-    price,
-    thumbnail,
-    code,
-    stock
-  ) {
-
-    this.products = JSON.parse(fs.readFileSync(this.#path, "utf-8"))
-
+  addProduct(title, description, price, thumbnail, code, stock) {
     if (
-      title == undefined ||
-      title == null ||
-      title == "" ||
-
-      description == undefined ||
-      description == null ||
-      description == "" ||
-
-      price == undefined ||
-      price == null ||
-      price == "" ||
-
-      thumbnail == undefined ||
-      thumbnail == null ||
-      thumbnail == "" ||
-
-      code == undefined ||
-      code == null ||
-      code == "" ||
-      this.#getProductByCode(code) ||
-
-      stock == undefined ||
-      stock == null ||
-      stock == ""
+      !title ||
+      !description ||
+      !price ||
+      !thumbnail ||
+      !code ||
+      !stock ||
+      this.#getProductByCode(code)
     ) {
-      console.log("Error, all fields are required, make sure this product is not adde in the system already");
-    } else {
-
-      const newProduct = {
-        title,
-        description,
-        price,
-        thumbnail,
-        code,
-        stock,
-        id: this.#generateId(),
-
-
-      };
-
-      this.products = [...this.products, newProduct];
-      fs.writeFileSync(this.#path, JSON.stringify(this.products))
-
-      console.log("Product added");
-      return true
+      throw new Error("Error: All fields are required, or the product already exists in the system.");
     }
 
+    const newProduct = {
+      title,
+      description,
+      price,
+      thumbnail,
+      code,
+      stock,
+      id: this.#generateId(),
+    };
+
+    this.#products.push(newProduct);
+    fs.writeFile(this.#path, JSON.stringify(this.#products));
+    console.log("Product added successfully.");
+    return true;
   }
-  //tarea_2 test delete and update product
-  deleteProduct(id) {
-    this.products = JSON.parse(fs.readFileSync(this.#path, "utf-8"))
-    const productFound = this.products.find(pro => pro.id == id);
-    if (this.products.find(p => p.id === id)) {
-      this.products.splice(this.products.indexOf(this.products.find(pro => pro.id === id)), 1)
-      fs.writeFileSync(this.#path, JSON.stringify(this.products))
-      return console.log("Deleted product successfully")
 
-    } else {
-      return console.log("Product not found")
+  deleteProduct(id) {
+    const productIndex = this.#products.findIndex((product) => product.id === id);
+    if (productIndex === -1) {
+      console.log("Product not found.");
+      return false;
     }
+    this.#products.splice(productIndex, 1);
+    fs.writeFile(this.#path, JSON.stringify(this.#products));
+    console.log("Product deleted successfully.");
+    return true;
   }
 
   updateProduct(id, key, value) {
-    this.products = JSON.parse(fs.readFileSync(this.#path, "utf-8"))
-
-    if (key == "id") {
-      return console.log("It is not possible to modify the id field, try another field")
-    } else if (this.products.find(pro => pro.id === id)) {
-      const Found = this.products.find(pro => pro.id === id)
-      Found[key] = value
-      fs.writeFileSync(this.#path, JSON.stringify(this.products))
-      return console.log("Updated product successfully", Found)
-    } else {
-      return console.log("Product not found")
+    if (key === "id") {
+      console.log("It is not possible to modify the id field, try another field.");
+      return false;
     }
+
+    const product = this.#products.find((product) => product.id === id);
+    if (!product) {
+      console.log("Product not found.");
+      return false;
+    }
+
+    product[key] = value;
+    fs.writeFile(this.#path, JSON.stringify(this.#products));
+    console.log("Product updated successfully.");
+    return true;
   }
 }
+
+
+
+
+
+
 
 
 const testProduct = new ProductManager("./product.json");
@@ -168,11 +137,4 @@ console.log(testProduct.products);
 testProduct.updateProduct(1, 'title', 'metal');
 testProduct.updateProduct(1, 'description', 'oro');
 
-//chat error
-/*try {
-  var myObj = JSON.parse(myJSON);
-}
-catch (e) {
-  console.log("Error al analizar JSON: " + e);
-}
-*/
+export { ProductManager }

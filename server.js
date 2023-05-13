@@ -1,22 +1,33 @@
-const express = require("express");
+//const express = require ("express");
+//import express from "express";
+import {ProductManager} from "./CursoBackEnd.js";
+import * as express from "express";
+
+
+
 const app = express();
 const port = 8080;
+const product = new ProductManager();
 app.use(express.urlencoded({ extended: true }));
 
 //ADAPTARLO A NUESTRO PRODUCT MANAGER
+
+
 
 let products = [
 
     { id: "1", name: "pelota", price: 20, },
     { id: "2", name: "cami", price: 30, },
     { id: "3", name: "pantalon", price: 80, }
-];
+    
+]; 
 
-app.get("/products", (req, res) => {
+app.get("/product", (req, res) => {
     //ejemplo query ?precio=100 & nombre=pelota
     console.log(req.query);
       const price = req.query.price;
-    if (req.query && price) {
+      // hago un test de substitucion de req.query && price por solo price en el if (price)
+    if (price) {
         const productsFilterByPrice = products.filter(
             (p) => p.price == price
         );
@@ -30,7 +41,8 @@ app.get("/products", (req, res) => {
         return res.json({
             status: "success",
             msg: " this are all of the products",
-            data: products,
+            // test cambio de data:products por product.getAllProducts()
+            data: product.getAllProducts(),
         })
 
 
@@ -42,7 +54,7 @@ app.get("/products", (req, res) => {
      }); */
 
 })
-app.get("/products/:id", (req, res) => {
+app.get("/product/:id", (req, res) => {
 
     
 
@@ -50,12 +62,15 @@ app.get("/products/:id", (req, res) => {
     // se buscan los productos por id
 
     const id = req.params.id;
-    const product = products.find((p) => p.id == id);
-    if (product) {
+    //test de la variable const product por productById = product.getProductById(id)
+    const productById = product.getProductById(id);
+    //test if (product) por if (productById)
+    if (productById) {
         return res.json({
             status: "success",
             msg: "product found",
-            data: product,
+            //tenemos que cambiar el data: porduct por data: productById
+            data: productById,
         });
     }
     else {
