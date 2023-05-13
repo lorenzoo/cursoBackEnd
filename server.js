@@ -1,5 +1,5 @@
 //const express = require ("express");
-//import express from "express";
+//mport express from "express";
 import {ProductManager} from "./CursoBackEnd.js";
 import * as express from "express";
 
@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 //ADAPTARLO A NUESTRO PRODUCT MANAGER
 
 
-
+/*
 let products = [
 
     { id: "1", name: "pelota", price: 20, },
@@ -21,6 +21,7 @@ let products = [
     { id: "3", name: "pantalon", price: 80, }
     
 ]; 
+*/
 
 app.get("/product", (req, res) => {
     //ejemplo query ?precio=100 & nombre=pelota
