@@ -1,9 +1,11 @@
 //const express = require ("express");
 //mport express from "express";
-import {ProductManager} from "./CursoBackEnd.js";
-import * as express from "express";
 
-
+//import {ProductManager} from "./CursoBackEnd.js";
+/*import * as express from "express";
+*/
+const express = require ("express");
+const ProductManager = require("./CursoBackEnd");
 
 const app = express();
 const port = 8080;

@@ -2,22 +2,22 @@
   "name": "cursobackend",
   "version": "1.0.0",
   "description": "cursobackend",
-  "main": "CursoBackEnd.js",
+  "main": "server.js",
   "scripts": {
     
     
-    "start": "nodemon server.js"
+    
   },
   "editor.formatOnSave": true,
   "author": "enrique",
   "license": "ISC",
   "dependencies": {
-    
+    "start": "nodemon server.js",
     "express": "^4.18.2",
     "moment": "^2.29.4",
     "prettier": "^3.0.0-alpha.6"
     
   },
-  "keywords": [],
-  "type" : "module"
+  "keywords": []
+  
 }
