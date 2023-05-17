@@ -2,26 +2,17 @@ import express from "express";
 import { ProductManager } from "./ProductManager.js";
 
 
-
+//app.use(express.json());
 const app = express();
 const port = 8080;
 const productManager = new ProductManager();
-//const products = productManager;
+
 
 
 
 app.use(express.urlencoded({ extended: true }));
 
-//ADAPTARLO A NUESTRO PRODUCT MANAGER------------------------------------------
-/*
-let products = [
 
-  { id: "1", name: "pelota", price: 20, },
-  { id: "2", name: "cami", price: 30, },
-  { id: "3", name: "pantalon", price: 80, }
-
-];
-*/ 
 
 // RUTA DE ENTRADA URL ----------------------------------------------------------------
 app.get("/", (req, res) => {
@@ -57,14 +48,14 @@ const price = req.query.price;
 
 
 // LA BUSQUEDA POR ID " por PARAMS / " FUNCIONA --------------------------------------------------------------------------
-
+/*
 app.get("/products/:id", (req, res) => {
 
   // se buscan los productos por id
 
-  const id = req.params.id;
+  const id = parseInt(req.params.id);
   //test de la variable const product por productById = product.getProductById(id)
-  const product = products.find((p) => p.id == id);
+  const product = productManager.getProductById(id);
   //test if (product) por if (productById)
   if (product) {
     return res.json({
@@ -85,7 +76,7 @@ app.get("/products/:id", (req, res) => {
   }
 
 
-});
+}); */
 
 
 

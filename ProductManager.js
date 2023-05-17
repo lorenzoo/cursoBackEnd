@@ -1,12 +1,12 @@
-import fs from "fs/promises";
+import fs from "fs";
 
 
-class ProductManager {
+export class ProductManager {
   #path;
   #products;
-  constructor(path) {
-    this.#path = path;
-    this.#products = [];
+  constructor() {
+    this.#path = "./product.json";
+    this.#products = JSON.parse(fs.readFileSync(this.#path, "utf-8"));
     
   }
 
@@ -112,5 +112,3 @@ console.log(productManager.products);
 productManager.getProducts();
 */
 
-
-export { ProductManager };
