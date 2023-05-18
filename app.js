@@ -18,14 +18,47 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/", (req, res) => {
   return res.send("welcome to my app");
 });
+
 //pruebas del ProductManager en la app-------------------------------
-//app.use("/products", productManager, ProductManager);
-// adadptar ruta para la entrega de rutas
-// BUSQUEDA PRECIO " por query ?precio= "FUNCIONA BIEN SINO ENCUENTRA NADA DEVUELVE TODOS LOS PRODUCTOS------------
+
 app.get("/products", (req, res) => {
   console.log(req.query);
-  
+  const allProducts = productManager.getProducts();
+  let limit = req.query.limit;
+  if (!limit){
+    return res.json({
+      products: allProducts
+    });
+    
+  }
+
+  /*TEST PARA ELIMINAR CODIGO Y LIMPIAR ( EN COMENTADO ) POR EL SIGUIENTE ELSE IF
+
+  const parsedLimit = parseInt(limit);
+  if (parsedLimit > 0 && parsedLimit <= allProducts.length)
+  const productsLimit = allProducts.slice(0, parsedLimit);{
+  return res.json({ data: productsLimit });
+}  return res.json({
+    status: "error",
+    msg: "Exceed the limit of products",
+  });
+});
+  */
+
+  else if (limit > 0 && limit <= allProducts.length){
+    let productsLimit = allProducts.slice (0 , limit);
+    return res.json ({data: productsLimit});
+  }
+  else if (limit > allProducts.length){
+    return res.json({
+      status: "error",
+      msg: "Exceed the limit of products",
+    });
+  }
+});
+
 // AQUI ES DONDE SE TIENE QUE PONER EL LIMITE Y FILTRARLO
+/*
 const price = req.query.price;
   if (req.query && price) {
     const productsFilterByPrice = productManager.getProducts().filter(p => p.price == req.query.price);
@@ -35,7 +68,7 @@ const price = req.query.price;
       data: productsFilterByPrice,
 
     })
-//AQUI SE ENVIAN TODOS LOS PRODUCTOS EN CASO QUE NO ENCUENTRE QUE SE ESTA BUSCANDO----------------
+    //AQUI SE ENVIAN TODOS LOS PRODUCTOS EN CASO QUE NO ENCUENTRE QUE SE ESTA BUSCANDO----------------
   } else {
     return res.json({
       status: "success",
@@ -43,12 +76,12 @@ const price = req.query.price;
       data: productManager.getProducts(),
     })
   } 
-})
 
 
+*/
 
 // LA BUSQUEDA POR ID " por PARAMS / " FUNCIONA --------------------------------------------------------------------------
-/*
+
 app.get("/products/:id", (req, res) => {
 
   // se buscan los productos por id
@@ -76,12 +109,12 @@ app.get("/products/:id", (req, res) => {
   }
 
 
-}); */
+}); 
 
 
 
 
-// este esta funcionando bien pero no la necesitamos ahora----------------------------------
+// TEST DE RUTA este esta funcionando bien pero no la necesitamos ahora----------------------------------
 /*
 app.get("/boca", (req, res) => {
   return res.json("el mejor del mundo");
@@ -96,7 +129,7 @@ app.get("*", (req, res) => {
 //PUERTO DONDE ESTA CORRIENDO LA APP-------------------------------------------------------
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`App listening on port ${port}`);
 });
 
 
