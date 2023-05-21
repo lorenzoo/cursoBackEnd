@@ -4,12 +4,12 @@ import { ProductManager } from "./ProductManager.js";
 
 //app.use(express.json());
 const app = express();
-const port = 8080;
+const port = 3000;
 const productManager = new ProductManager();
 
 
-
-
+ 
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
@@ -26,7 +26,7 @@ app.get("/products", (req, res) => {
   const allProducts = productManager.getProducts();
   let limit = req.query.limit;
   if (!limit) {
-    return res.json({
+    return res.status(200).json({
       products: allProducts
     });
 
@@ -39,7 +39,7 @@ app.get("/products", (req, res) => {
     return res.json({ data: productsLimit });
   }
   else if (limit > allProducts.length) {
-    return res.json({
+    return res.status(400).json({
       status: "error",
       msg: "Exceed the limit of products",
     });
@@ -59,7 +59,7 @@ app.get("/products/:id", (req, res) => {
   const product = productManager.getProductById(id);
   //test if (product) por if (productById)
   if (product) {
-    return res.json({
+    return res.status(200).json({
       status: "success",
       msg: "product found",
       
@@ -67,7 +67,7 @@ app.get("/products/:id", (req, res) => {
     });
   }
   else {
-    return res.json({
+    return res.status(400).json({
       status: "error",
       msg: "product not found",
       data: {},
@@ -79,14 +79,114 @@ app.get("/products/:id", (req, res) => {
 
 });
 
+// DELETE PRODUCT BY ID
+
+app.delete("/products/:id", (req, res) => {
+
+  // se elimina los productos por id
+
+  const id = parseInt(req.params.id);
+  
+  const product = productManager.getProductById(id);
+
+  // TEST NUEVO CODIGO BORRAR POR ID "FUNCIONA CORRECTAMENTE"------------------
+  if (product) {
+    productManager.deleteProduct(id);
+    
+    return res.status(200).json({
+      status: "success",
+      msg: "Product with id = " + id + " has been deleted",
+      data: {},
+    });
+  }
+  
+  else {
+    return res.status(400).json({
+      status: "error",
+      msg: "Product not found",
+      data: {},
+    });
+  } 
+});
+
+//METODO PUT---------------------------------------
+app.put("/products/:id", (req, res) => {
+
+  // se elimina los productos por id
+
+  const id = parseInt(req.params.id);
+  const newData = req.body;
+  
+  const product = productManager.getProductById(id);
 
 
+  if (indext == -1 ) {
+    
+    
+    return res.status(400).json({
+      status: "error",
+      msg: "This product does not exist ",
+      data: {},
+    });
+  }
+  
+  else {
+   product [indext] = {...newData, id: product[indext].id} ;
+   return res.status(201).json({
+    status: "success",
+    msg: "Product modified",
+    data:product [indext],
+   })
+
+}
+});
+
+
+
+
+
+
+ // METODO POST ---------------------------------
+app.post("/products", (req, res) => {
+
+  // SE CREA UN PRODUCTO
+
+  const createProduct = req.body;
+  const product = productManager.getProducts();
+
+  createProduct.id = (Math.random() * 1000 ).toFixed(0);
+  console.log(createProduct);
+  res.send("hola");
+
+  product.push(createProduct);
+  return res.status(201).json({ 
+    status: "success", 
+    msg: "Product created",
+    data: createProduct,
+  })
+  /*
+ 
+    return res.status(200).json({
+      status: "success",
+      msg: "Product with id = " + id + " has been deleted",
+      data: {},
+    });
+  }
+  
+  else {
+    return res.status(400).json({
+      status: "error",
+      msg: "Product not found",
+      data: {},
+    });
+  } */
+});
 
 
 
 // ESTA ES LA RUTA DE URLS QUE NO EXISTEN ---------------------------------------------------
 app.get("*", (req, res) => {
-  return res.json({ status: "error", msg: "this route doesnt exist", data: {} });
+  return res.status(404).json({ status: "error", msg: "this route doesnt exist", data: {} });
 });
 
 //PUERTO DONDE ESTA CORRIENDO LA APP-------------------------------------------------------
@@ -94,6 +194,3 @@ app.get("*", (req, res) => {
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
 });
-
-
-

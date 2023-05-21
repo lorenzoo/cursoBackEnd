@@ -95,20 +95,3 @@ export class ProductManager {
   }
 
 }
-
-/*
-const productManager = new ProductManager("./products.json");
-
-productManager.addProduct("producto prueba", "Este es un producto prueba", 200, "Sin imagen", "abc123", 25);
-productManager.addProduct("producto prueba_2", "Este es un producto prueba_2", 200222, "Sin imagen_2", "abc123_2", 252);
-
-//productManager.getProducts();
-
-/*
-productManager.updateProduct(1, 'title', 'metal');
-productManager.updateProduct(1, 'description', 'oro');
-console.log(productManager.products);
-
-productManager.getProducts();
-*/
-
