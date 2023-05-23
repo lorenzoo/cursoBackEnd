@@ -116,11 +116,13 @@ app.put("/products/:id", (req, res) => {
 
   const id = parseInt(req.params.id);
   const newData = req.body;
-  
   const product = productManager.getProductById(id);
 
+//test const index
 
-  if (indext == -1 ) {
+  const index = product.findIndex(item => item.id === id);
+
+  if (index == -1 ) {
     
     
     return res.status(400).json({
@@ -131,11 +133,11 @@ app.put("/products/:id", (req, res) => {
   }
   
   else {
-   product [indext] = {...newData, id: product[indext].id} ;
+   product [index] = {...newData, id: product[index].id} ;
    return res.status(201).json({
     status: "success",
     msg: "Product modified",
-    data:product [indext],
+    data:product [index],
    })
 
 }
@@ -159,11 +161,13 @@ app.post("/products", (req, res) => {
   res.send("hola");
 
   product.push(createProduct);
+  // test de codigo productManager.addProduct(createProduct);
   return res.status(201).json({ 
     status: "success", 
     msg: "Product created",
     data: createProduct,
-  })
+  });
+
   /*
  
     return res.status(200).json({
