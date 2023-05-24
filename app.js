@@ -1,3 +1,4 @@
+
 import express from "express";
 import { ProductManager } from "./ProductManager.js";
 
@@ -33,8 +34,7 @@ app.get("/products", (req, res) => {
 
 app.get("/products/:id", (req, res) => {
   const id = parseInt(req.params.id);
-  productManager.getProductById(id)
-    .then(product => {
+  productManager.getProductById(id).then(product => {
       return res.status(200).json({
         status: "success",
         msg: "product found",
@@ -52,8 +52,7 @@ app.get("/products/:id", (req, res) => {
 
 app.delete("/products/:id", (req, res) => {
   const id = parseInt(req.params.id);
-  productManager.getProductById(id)
-    .then(product => {
+  productManager.getProductById(id).then(product=> {
       productManager.deleteProduct(id);
       return res.status(200).json({
         status: "success",
@@ -73,9 +72,8 @@ app.delete("/products/:id", (req, res) => {
 app.put("/products/:id", (req, res) => {
   const id = parseInt(req.params.id);
   const newData = req.body;
-  productManager.getProductById(id)
-    .then(product => {
-      const index = product.findIndex(item => item.id === id);
+  productManager.getProductById(id).then(product => {
+      const index = productManager.getProducts().findIndex(item => item.id === id);
       if (index === -1) {
         return res.status(400).json({
           status: "error",
@@ -83,12 +81,21 @@ app.put("/products/:id", (req, res) => {
           data: {},
         });
       } else {
-        product[index] = { ...newData, id: product[index].id };
-        return res.status(201).json({
-          status: "success",
-          msg: "Product modified",
-          data: product[index],
-        });
+        productManager.updateProduct(id, newData)
+          .then(updatedProduct => {
+            return res.status(201).json({
+              status: "success",
+              msg: "Product modified",
+              data: updatedProduct,
+            });
+          })
+          .catch(error => {
+            return res.status(400).json({
+              status: "error",
+              msg: "Error modifying product",
+              data: {},
+            });
+          });
       }
     })
     .catch(error => {
@@ -100,22 +107,69 @@ app.put("/products/:id", (req, res) => {
     });
 });
 
-app.post("/products", (req, res) => {
+
+app.post("/products", async (req, res) => {
   const createProduct = req.body;
-  const product = productManager.getProducts();
   createProduct.id = (Math.random() * 1000).toFixed(0);
-  console.log(createProduct);
-  res.send("hola");
-  productManager.addProduct(createProduct);
-  return res.status(201).json({
-    status: "success",
-    msg: "Product created",
-    data: createProduct,
-  });
+
+  try {
+    const result = await productManager.addProduct(createProduct);
+    if (result) {
+      return res.status(201).json({
+        status: "success",
+        msg: "Product created",
+        data: createProduct,
+      });
+    } else {
+      return res.status(400).json({
+        status: "error",
+        msg: "Error creating product",
+        data: {},
+      });
+    }
+  } catch (error) {
+    return res.status(400).json({
+      status: "error",
+      msg: "Error creating product",
+      data: {},
+    });
+  }
 });
 
+/* PROBANDO DE ARREGLAR BLOQUE
+
+app.post("/products", (req, res) => {
+  const createProduct = req.body;
+  createProduct.id = parseInt(Math.random() * 1000).toFixed(0);
+  productManager.addProduct(createProduct)
+    .then((result) => {
+      if (result){
+      return res.status(201).json({
+        status: "success",
+        msg: "Product created",
+        data: createProduct,
+      });
+    } else {
+      return res.status(400).json({
+        status: "error",
+        msg: "Error creating product",
+        data: {},
+      })
+    }
+
+    })
+  
+    .catch(error => {
+      return res.status(400).json({
+        status: "error",
+        msg: "Error creating product",
+        data: {}, 
+      });
+    });
+});*/
+
 app.get("*", (req, res) => {
-  return res.status(404).json({ status: "error", msg: "this route doesnt exist", data: {} });
+  return res.status(404).json({ status: "error", msg: "This route doesn't exist", data: {} });
 });
 
 app.listen(port, () => {

@@ -17,6 +17,20 @@ export class ProductManager {
     return this.#products;
   }
 
+
+  getProductById(id) {
+    return new Promise((resolve, reject) => {
+      const product = this.#products.find((product) => product.id === id);
+      if (product) {
+        resolve(product);
+      } else {
+        reject(new Error("Product not found"));
+      }
+    });
+  }
+
+/* TEST PRODUCT EN PROMESA--------
+
   getProductById(id) {
     const productFound = this.#products.find((product) => product.id === id);
     if (productFound) {
@@ -26,6 +40,8 @@ export class ProductManager {
       return undefined;
     }
   }
+
+  */
 
   #getProductByCode(code) {
     return this.#products.find((product) => product.code === code);
@@ -51,12 +67,13 @@ export class ProductManager {
       thumbnail,
       code,
       stock,
-      id: this.#generateId(),
+      id: parseInt(this.#generateId()),
     };
 
     this.#products.push(newProduct);
     try {
-      await fs.writeFile(this.#path, JSON.stringify(this.#products));
+      //test fs.promises.writeFile
+      await fs.promises.writeFile(this.#path, JSON.stringify(this.#products));
       console.log("Product added successfully.");
       return true;
     } catch (error) {
@@ -71,9 +88,15 @@ export class ProductManager {
       return false;
     }
     this.#products.splice(productIndex, 1);
-    await fs.writeFile(this.#path, JSON.stringify(this.#products));
-    console.log("Product deleted successfully.");
-    return true;
+    //test fs.promises.writeFile
+    try {
+      await fs.promises.writeFile(this.#path, JSON.stringify(this.#products));
+      console.log("Product deleted successfully.");
+      return true;
+    } catch (error) {
+      console.error("Error writing file:", error);
+      return false;
+    }
   }
 
   async updateProduct(id, key, value) {
@@ -89,9 +112,13 @@ export class ProductManager {
     }
 
     product[key] = value;
-    await fs.writeFile(this.#path, JSON.stringify(this.#products));
+    try {
+    await fs.promises.writeFile(this.#path, JSON.stringify(this.#products));
     console.log("Product updated successfully.");
     return true;
-  }
+  }  catch (error) {
+    console.error("Error writing file:", error);
+    return false;
+  };
 
-}
+}};
