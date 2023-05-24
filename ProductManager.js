@@ -4,7 +4,9 @@ import fs from "fs";
 export class ProductManager {
   #path;
   #products;
+  #id;
   constructor() {
+    this.#id = 0,
     this.#path = "./product.json";
     this.#products = JSON.parse(fs.readFileSync(this.#path, "utf-8"));
     
@@ -41,6 +43,10 @@ export class ProductManager {
     }
   }
 
+PRODUCT JSON PRODUCT -----------------
+[{"title":"product 1","description":"Este es product 1","price":2400,"thumbnail":"No image","stock":25,"code":"1","id":1},{"title":"product 4","description":"Este es product 4","price":2300,"thumbnail":"No image","stock":22,"code":"4","id":4},{"title":"product 5","description":"Este es product 5","price":2200,"thumbnail":"No image","stock":30,"code":"5","id":5},{"title":"product 6","description":"Este es product 6","price":2300,"thumbnail":"No image","stock":22,"code":"6","id":6},{"title":"product 7","description":"Este es product 7","price":2200,"thumbnail":"No image","stock":30,"code":"7","id":7},{"title":"Product 8","description":"Descripción del producto 8","price":10.99,"thumbnail":"imagen.jpg","code":"ABC123","stock":23,"id":6}]
+
+
   */
 
   #getProductByCode(code) {
@@ -48,7 +54,7 @@ export class ProductManager {
   }
 
   #generateId() {
-    return this.#products.length + 1;
+    return this.#id++ ;
   }
 
   async addProduct(title, description, price, thumbnail, code, stock) {
@@ -67,7 +73,7 @@ export class ProductManager {
       thumbnail,
       code,
       stock,
-      id: parseInt(this.#generateId()),
+      id: ++this.#id
     };
 
     this.#products.push(newProduct);

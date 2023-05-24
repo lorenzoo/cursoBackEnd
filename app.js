@@ -110,10 +110,10 @@ app.put("/products/:id", (req, res) => {
 
 app.post("/products", async (req, res) => {
   const createProduct = req.body;
-  createProduct.id = (Math.random() * 1000).toFixed(0);
+  //createProduct.id = parseInt((Math.random() * 1000).toFixed(0));
 
   try {
-    const result = await productManager.addProduct(createProduct);
+    const result = await productManager.addProduct(createProduct.title, createProduct.description, createProduct.price,createProduct.thumbnail, createProduct.code, createProduct.stock);
     if (result) {
       return res.status(201).json({
         status: "success",
