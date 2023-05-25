@@ -31,7 +31,7 @@ app.get("/products", (req, res) => {
     });
   }
 });
-
+//ENCONCTRAR PRODUCTO POR ID
 app.get("/products/:id", (req, res) => {
   const id = parseInt(req.params.id);
   productManager.getProductById(id).then(product => {
@@ -49,7 +49,7 @@ app.get("/products/:id", (req, res) => {
       });
     });
 });
-
+//BORRAR PRODUCTO
 app.delete("/products/:id", (req, res) => {
   const id = parseInt(req.params.id);
   productManager.getProductById(id).then(product=> {
@@ -68,7 +68,7 @@ app.delete("/products/:id", (req, res) => {
       });
     });
 });
-
+//MODIFICAR PRODUCTO
 app.put("/products/:id", (req, res) => {
   const id = parseInt(req.params.id);
   const newData = req.body;
@@ -107,7 +107,7 @@ app.put("/products/:id", (req, res) => {
     });
 });
 
-
+//CREAR PRODUCTO
 app.post("/products", async (req, res) => {
   const createProduct = req.body;
   //createProduct.id = parseInt((Math.random() * 1000).toFixed(0));
@@ -136,37 +136,6 @@ app.post("/products", async (req, res) => {
   }
 });
 
-/* PROBANDO DE ARREGLAR BLOQUE
-
-app.post("/products", (req, res) => {
-  const createProduct = req.body;
-  createProduct.id = parseInt(Math.random() * 1000).toFixed(0);
-  productManager.addProduct(createProduct)
-    .then((result) => {
-      if (result){
-      return res.status(201).json({
-        status: "success",
-        msg: "Product created",
-        data: createProduct,
-      });
-    } else {
-      return res.status(400).json({
-        status: "error",
-        msg: "Error creating product",
-        data: {},
-      })
-    }
-
-    })
-  
-    .catch(error => {
-      return res.status(400).json({
-        status: "error",
-        msg: "Error creating product",
-        data: {}, 
-      });
-    });
-});*/
 
 app.get("*", (req, res) => {
   return res.status(404).json({ status: "error", msg: "This route doesn't exist", data: {} });
