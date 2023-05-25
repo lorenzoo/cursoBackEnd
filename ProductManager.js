@@ -115,10 +115,11 @@ export class ProductManager {
     }
 
     product[key] = value;
+    console.log(product[key]);
     try {
     await fs.promises.writeFile(this.#path, JSON.stringify(this.#products));
     console.log("Product updated successfully.");
-    return true;
+    return product;
   }  catch (error) {
     console.error("Error writing file:", error);
     return false;

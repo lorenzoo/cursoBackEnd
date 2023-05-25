@@ -31,16 +31,16 @@ app.get("/products", (req, res) => {
     });
   }
 });
-//ENCONCTRAR PRODUCTO POR ID
+//ENCONTRAR PRODUCTO POR ID
 app.get("/products/:id", (req, res) => {
   const id = parseInt(req.params.id);
   productManager.getProductById(id).then(product => {
-      return res.status(200).json({
-        status: "success",
-        msg: "product found",
-        data: product,
-      });
-    })
+    return res.status(200).json({
+      status: "success",
+      msg: "product found",
+      data: product,
+    });
+  })
     .catch(error => {
       return res.status(400).json({
         status: "error",
@@ -52,14 +52,14 @@ app.get("/products/:id", (req, res) => {
 //BORRAR PRODUCTO
 app.delete("/products/:id", (req, res) => {
   const id = parseInt(req.params.id);
-  productManager.getProductById(id).then(product=> {
-      productManager.deleteProduct(id);
-      return res.status(200).json({
-        status: "success",
-        msg: `Product with id = ${id} has been deleted`,
-        data: {},
-      });
-    })
+  productManager.getProductById(id).then(product => {
+    productManager.deleteProduct(id);
+    return res.status(200).json({
+      status: "success",
+      msg: `Product with id = ${id} has been deleted`,
+      data: {},
+    });
+  })
     .catch(error => {
       return res.status(400).json({
         status: "error",
@@ -68,43 +68,24 @@ app.delete("/products/:id", (req, res) => {
       });
     });
 });
+
+
 //MODIFICAR PRODUCTO
-app.put("/products/:id", (req, res) => {
+app.put("/products/:id", async (req, res) => {
   const id = parseInt(req.params.id);
   const newData = req.body;
-  productManager.getProductById(id).then(product => {
-      const index = productManager.getProducts().findIndex(item => item.id === id);
-      if (index === -1) {
-        return res.status(400).json({
-          status: "error",
-          msg: "This product does not exist",
-          data: {},
-        });
-      } else {
-        productManager.updateProduct(id, newData)
-          .then(updatedProduct => {
-            return res.status(201).json({
-              status: "success",
-              msg: "Product modified",
-              data: updatedProduct,
-            });
-          })
-          .catch(error => {
-            return res.status(400).json({
-              status: "error",
-              msg: "Error modifying product",
-              data: {},
-            });
-          });
-      }
-    })
-    .catch(error => {
-      return res.status(400).json({
-        status: "error",
-        msg: "Product not found",
-        data: {},
-      });
-    });
+  const productkey = Object.keys(newData);
+  const productvalue = Object.values(newData);
+
+
+  const updatedProduct = await productManager.updateProduct(id, productkey[0], productvalue[0]);
+  //console.log(updatedProduct);
+  return res.status(201).json({
+    status: "success",
+    msg: "Product modified",
+    data: updatedProduct,
+  });
+
 });
 
 //CREAR PRODUCTO
@@ -113,7 +94,7 @@ app.post("/products", async (req, res) => {
   //createProduct.id = parseInt((Math.random() * 1000).toFixed(0));
 
   try {
-    const result = await productManager.addProduct(createProduct.title, createProduct.description, createProduct.price,createProduct.thumbnail, createProduct.code, createProduct.stock);
+    const result = await productManager.addProduct(createProduct.title, createProduct.description, createProduct.price, createProduct.thumbnail, createProduct.code, createProduct.stock);
     if (result) {
       return res.status(201).json({
         status: "success",
