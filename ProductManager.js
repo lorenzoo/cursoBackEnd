@@ -101,7 +101,7 @@ export class ProductManager {
       return false;
     }
   }
-
+//-----------------------------------------------
   async updateProduct(id, key, value) {
     if (key === "id") {
       console.log("It is not possible to modify this field, try another field.");
@@ -126,3 +126,4 @@ export class ProductManager {
   };
 
 }};
+//------------------------------------------------------
