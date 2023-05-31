@@ -12,15 +12,15 @@ cartsRouter.use(express.urlencoded({ extended: true }));
 cartsRouter.post("/", async (req, res) => {
     const userCart = await cartsManager.createCart();
 
-    res.status(201).send({ status: "success", data: userCart });
+    res.status(201).json({ status: "success", data: userCart });
 });
 
 cartsRouter.get("/:cid", async (req, res) => {
     try {
         const cartId = await cartsManager.getCartById(Number(req.params.cid));
-        res.status(200).send({ status: "success", data: cartId });
+        res.status(200).json({ status: "success", data: cartId });
     } catch (error) {
-        res.status(404).send({ status: "error", error: error.message });
+        res.status(404).json({ status: "error", error: error.message });
     }
 });
 
@@ -30,8 +30,8 @@ cartsRouter.post("/:cid/product/:pid", async (req, res) => {
             Number(req.params.cid),
             Number(req.params.pid)
         );
-        res.status(200).send({ status: "success", data: cartId });
+        res.status(200).json({ status: "success", data: cartId });
     } catch (error) {
-        res.status(404).send({ status: "error", error: error.message });
+        res.status(404).json({ status: "error", error: error.message });
     }
 });
