@@ -3,7 +3,7 @@ import fs from "fs";
 
 const productManager = new ProductManager();
 
-export class CartstManager {
+export class CartsManager {
   #path;
   #carts;
   #idCounter;

@@ -1,20 +1,21 @@
 import express from "express";
 import { ProductManager } from "../ProductManager.js";
-import handlebars from "express-handlebars";
+import exphbs from "express-handlebars";
 import { routerProducts } from "./routes/product.router.js";
 import { __dirname } from "./routes/utils.js";
 import { uploader } from "./routes/utils.js";
 import { cartsRouter } from "./routes/carts.router.js";
-import { CartstManager } from "../CartsManager.js";
+import { CartsManager } from "../CartsManager.js";
 import { Server } from "socket.io";
-import {viewsRouter} from "./routes/products.view.router.js"
+import {routerProductsView} from "./routes/products.view.router.js"
+import path from "path";
 
 
 
 const app = express();
 const port = 3000;
 const productManager = new ProductManager();
-const cartsManager = new CartstManager();
+const cartsManager = new CartsManager();
 
 // Nueva entrega---------------
 const httpServer = app.listen(port, () => {
@@ -27,24 +28,22 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //MOTOR HANDLEBARS-------------
-app.engine("handlebars", handlebars());
-app.set("views", __dirname + "/views");
-
-/*
-app.engine("handlebars", handlebars.engine());
-app.set("views", __dirname + "/views"); */
+// MOTOR HANDLEBARS-------------
+const hbs = exphbs.create();
+app.engine("handlebars", hbs.engine);
 app.set("view engine", "handlebars");
 
 
 
+
 //console.log(__dirname + "/public");
-app.use(express.static(__dirname + "public"));
+app.use(express.static(path.join(__dirname + "public")));
 socketServer.on("formSubmission", async (data) =>{
   await productManager.addProduct(data);
   const products = await productManager.getProducts();
   socketServer.sockets.emit("prodcuts", products);
 })
-app.use("/", viewsRouter);
+app.use("/", routerProductsView);
 
 //Nuevo trabajo---------
 socketServer.on("connection", async (socket) => {

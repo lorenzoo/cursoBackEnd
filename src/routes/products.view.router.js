@@ -1,13 +1,18 @@
 import express from "express";
-import { products } from "./utils.js";
+import { ProductManager } from "../../ProductManager.js";
+import { Router } from "express";
 
+const productManager = new ProductManager();
+export const routerProductsView = Router();
 
-export const routerProductsView = express.Router();
+routerProductsView.use(express.json());
+routerProductsView.use(express.urlencoded({ extended: true}));
 
-routerProductsView.get("/", (rq, res) => {
-    return res.render("products.html", {
-        title: "Title . Products",
-        products: products,
+routerProductsView.get("/", async (rq, res) => {
+    const allProducts = await productManager.getProducts();
+    res.render("home" , { allProducts});
+})
 
-    })
+routerProductsView.get("/realtimeproducts", async (req, res) => {
+    res.render("realTimeProducts",{});
 })
