@@ -13,7 +13,7 @@ import path from "path";
 
 
 const app = express();
-const port = 3000;
+const port = 8080;
 const productManager = new ProductManager();
 const cartsManager = new CartsManager();
 
@@ -26,7 +26,7 @@ const socketServer = new Server (httpServer);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+npm 
 
 // MOTOR HANDLEBARS-------------
 const hbs = exphbs.create();
