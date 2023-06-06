@@ -57,8 +57,14 @@ socketServer.on("connection", async (socket) => {
 
 /* VISTA HOME */
 app.get("/", async (req, res) => {
-  const allProducts = await productManager.getProducts();
-  res.render("home", {allProducts})
+  try {
+    const productManager = new ProductManager();
+    const allProducts = await productManager.getProducts();
+    res.render("home", { allProducts });
+  } catch (error) {
+    console.error("Error al obtener los productos:", error);
+    res.status(500).json({ error: "Error al obtener los productos" });
+  }
 });
 
 //ALL END POINTS PRODUCTS-------------------
