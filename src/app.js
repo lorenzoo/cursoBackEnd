@@ -39,11 +39,7 @@ app.set("view engine", "handlebars");
 
 //console.log(__dirname + "/public");
 app.use(express.static(path.join(__dirname + "/public")));
-socketServer.on("formSubmission", async (data) =>{
-  await productManager.addProduct(data);
-  const products = await productManager.getProducts();
-  socketServer.sockets.emit("products", products);
-})
+
 app.use("/", routerProductsView);
 
 //Nuevo trabajo---------
