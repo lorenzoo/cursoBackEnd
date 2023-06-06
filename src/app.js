@@ -59,11 +59,18 @@ socketServer.on("connection", async (socket) => {
   });
 });
 
+/* VISTA HOME */
+app.get("/", async (req, res) => {
+  const allProducts = await productManager.getProducts();
+  res.render("home", {allProducts})
+});
 
 //ALL END POINTS PRODUCTS-------------------
 app.use("/api/products", routerProducts);
 
-app.use("/api/carts",cartsRouter)
+app.use("/api/carts",cartsRouter);
+
+app.use("/realtimeproducts", routerProductsView);
 
 app.use("*", (req, res) => {
   return res.status(404).json({ status: "error", msg: "This route doesn't exist", data: {} });
