@@ -13,7 +13,7 @@ import path from "path";
 
 
 const app = express();
-const port = 8080;
+const port = 3000;
 const productManager = new ProductManager();
 const cartsManager = new CartsManager();
 
@@ -26,23 +26,23 @@ const socketServer = new Server (httpServer);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-npm 
+
 
 // MOTOR HANDLEBARS-------------
 const hbs = exphbs.create();
 app.engine("handlebars", hbs.engine);
-app.set("views", __dirname + "/views"),
+app.set("views", __dirname + "/views");
 app.set("view engine", "handlebars");
 
 
 
 
 //console.log(__dirname + "/public");
-app.use(express.static(path.join(__dirname + "public")));
+app.use(express.static(path.join(__dirname + "/public")));
 socketServer.on("formSubmission", async (data) =>{
   await productManager.addProduct(data);
   const products = await productManager.getProducts();
-  socketServer.sockets.emit("prodcuts", products);
+  socketServer.sockets.emit("products", products);
 })
 app.use("/", routerProductsView);
 
